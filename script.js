@@ -6,60 +6,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initial Hero Animations
-    const tl = gsap.timeline();
-    tl.to(".hero .fade-up", {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out"
-    })
-    .to(".hero .fade-in", {
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out"
-    }, "-=0.4");
-
-    // Animate the simulated SVG chart line drawing
-    tl.to(".trend-line", {
-        strokeDashoffset: 0,
-        duration: 2,
-        ease: "power2.inOut"
-    }, "-=0.8");
-
-    // Number Counter Animation
-    const counterElement = document.querySelector(".counter");
-    if(counterElement) {
-        const targetValue = parseInt(counterElement.getAttribute("data-target"));
-        tl.to({ value: 0 }, {
-            value: targetValue,
-            duration: 2,
-            ease: "power2.out",
-            onUpdate: function() {
-                // Formatting as Brazilian Real string e.g. R$ 12.847,00
-                const num = Math.floor(this.targets()[0].value);
-                const formatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
-                counterElement.innerHTML = formatter.format(num);
+    // Number Counter & Chart Animation on Scroll
+    const mockup = document.querySelector(".hero-mockup");
+    if(mockup) {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: mockup,
+                start: "top 85%", // Triggers when the top of the mockup hits 85% of viewport
+                toggleActions: "play none none none"
             }
-        }, "-=2");
+        });
+
+        // Animate the simulated SVG chart line drawing
+        tl.to(".trend-line", {
+            strokeDashoffset: 0,
+            duration: 2,
+            ease: "power2.inOut"
+        });
+
+        // Number Counter Animation
+        const counterElement = document.querySelector(".counter");
+        if(counterElement) {
+            const targetValue = parseInt(counterElement.getAttribute("data-target"));
+            const formatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+            
+            tl.to({ value: 0 }, {
+                value: targetValue,
+                duration: 2,
+                ease: "power2.out",
+                onUpdate: function() {
+                    const num = Math.floor(this.targets()[0].value);
+                    counterElement.innerHTML = formatter.format(num);
+                }
+            }, "<"); // Starts at the same time as the trend-line animation
+        }
     }
 
-    // Scroll Animations for rest of the page
-    const fadeUpElements = gsap.utils.toArray('section:not(.hero) .fade-up');
-    fadeUpElements.forEach(el => {
-        gsap.to(el, {
-            scrollTrigger: {
-                trigger: el,
-                start: "top 85%", // Trigger when upper part hits 85% of viewport
-                toggleActions: "play none none none"
-            },
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: "power2.out"
-        });
-    });
+    // Entrance Animations Removed
 
     // FAQ Accordion Logic
     const accordionHeaders = document.querySelectorAll('.accordion-header');
@@ -95,4 +78,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
         });
     });
+
+    // Floating Bar Visibility Logic
+    const floatingBar = document.getElementById('floatingBar');
+    if(floatingBar) {
+        ScrollTrigger.create({
+            trigger: "#results", 
+            start: "top 80%",
+            onEnter: () => floatingBar.classList.add('visible'),
+            onLeaveBack: () => floatingBar.classList.remove('visible')
+        });
+
+        // Hide floating bar when reaching the final offer section
+        ScrollTrigger.create({
+            trigger: "#offer",
+            start: "top bottom", // when top of offer hits bottom of viewport
+            onEnter: () => floatingBar.classList.remove('visible'),
+            onLeaveBack: () => floatingBar.classList.add('visible')
+        });
+    }
 });
