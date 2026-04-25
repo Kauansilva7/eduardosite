@@ -128,10 +128,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }, 4000);
     }
 
+    // Social Proof Notification Logic
+    const socialProof = document.getElementById('social-proof');
+    if (socialProof) {
+        const names = ["João", "Júlia", "Marcos", "Ana", "Carlos", "Fernanda", "Pedro", "Mariana", "Lucas", "Beatriz", "Rafael", "Camila"];
+        const times = ["agora mesmo", "há 2 minutos", "há 5 minutos", "há 10 minutos", "agora mesmo", "há 1 minuto"];
+        const buyerNameEl = document.getElementById('buyer-name');
+        const buyerTimeEl = document.getElementById('buyer-time');
+
+        function showNotification() {
+            // Pick random name and time
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomTime = times[Math.floor(Math.random() * times.length)];
+            
+            buyerNameEl.textContent = randomName;
+            buyerTimeEl.textContent = randomTime;
+
+            // Show
+            socialProof.classList.add('show');
+
+            // Hide after 4 seconds
+            setTimeout(() => {
+                socialProof.classList.remove('show');
+            }, 4000);
+        }
+
+        // Initial delay
+        setTimeout(() => {
+            showNotification();
+            // Then cycle every 15 seconds
+            setInterval(showNotification, 15000);
+        }, 3000);
+    }
+
     // Particles Generation
     const particlesContainer = document.getElementById('particles-container');
     if (particlesContainer) {
-        const particleCount = 20;
+        const particleCount = 100;
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
