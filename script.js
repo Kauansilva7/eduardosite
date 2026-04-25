@@ -42,7 +42,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     }
 
-    // Entrance Animations Removed
+    // Scroll Animations for sections (Staggered by section)
+    const animSections = gsap.utils.toArray('section');
+    animSections.forEach(section => {
+        const elements = section.querySelectorAll('.fade-up, .fade-in');
+        if (elements.length > 0) {
+            gsap.to(elements, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power2.out"
+            });
+        }
+    });
 
     // FAQ Accordion Logic
     const accordionHeaders = document.querySelectorAll('.accordion-header');
@@ -96,5 +114,40 @@ document.addEventListener("DOMContentLoaded", (event) => {
             onEnter: () => floatingBar.classList.remove('visible'),
             onLeaveBack: () => floatingBar.classList.add('visible')
         });
+    }
+
+    // Steps Auto-Cycling Logic
+    const steps = document.querySelectorAll('.step');
+    if(steps.length > 0) {
+        let currentStep = 0;
+        
+        setInterval(() => {
+            steps[currentStep].classList.remove('active');
+            currentStep = (currentStep + 1) % steps.length;
+            steps[currentStep].classList.add('active');
+        }, 4000);
+    }
+
+    // Particles Generation
+    const particlesContainer = document.getElementById('particles-container');
+    if (particlesContainer) {
+        const particleCount = 20;
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 3 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            const duration = Math.random() * 15 + 10;
+            particle.style.animationDuration = `${duration}s`;
+            
+            particle.style.animationDelay = `${Math.random() * 20}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
     }
 });

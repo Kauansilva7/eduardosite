@@ -87,6 +87,16 @@ h4 {
     padding: 24px;
 }
 
+/* Animation Utilities */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.fade-in {
+    opacity: 0;
+}
+
 /* --- Hero Section --- */
 .hero {
     position: relative;
@@ -109,7 +119,6 @@ h4 {
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0.15;
-    /* Transparency level */
     z-index: 0;
     pointer-events: none;
 }
@@ -666,4 +675,153 @@ section {
     margin: 0;
     border-radius: 50px;
     white-space: nowrap;
+}
+
+/* Steps Section */
+.steps-section {
+    padding: 20px 0 60px;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.step-connector {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    flex: 0.5;
+    margin-top: 25px;
+}
+
+/* Active State Colors */
+.step.active[data-step="1"] .step-number {
+    border-color: #FF5F56;
+    color: #FF5F56;
+    background: rgba(255, 95, 86, 0.1);
+    box-shadow: 0 0 20px rgba(255, 95, 86, 0.2);
+}
+
+.step.active[data-step="1"] .step-text {
+    color: #FF5F56;
+}
+
+.step.active[data-step="2"] .step-number {
+    border-color: #FFA500;
+    color: #FFA500;
+    background: rgba(255, 165, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+}
+
+.step.active[data-step="2"] .step-text {
+    color: #FFA500;
+}
+
+.step.active[data-step="3"] .step-number {
+    border-color: #FFD700;
+    color: #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.step.active[data-step="3"] .step-text {
+    color: #FFD700;
+}
+
+.step.active[data-step="4"] .step-number {
+    border-color: #00FF88;
+    color: #00FF88;
+    background: rgba(0, 255, 136, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+.step.active[data-step="4"] .step-text {
+    color: #00FF88;
+}
+
+@media(min-width: 768px) {
+    .step-text {
+        font-size: 0.85rem;
+    }
+}
+
+/* Particles Background */
+#particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: var(--neon-green);
+    border-radius: 50%;
+    opacity: 0;
+    filter: blur(1px);
+    box-shadow: 0 0 10px var(--neon-green);
+    animation: float-particle linear infinite;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(110vh) translateX(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.3;
+    }
+
+    90% {
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translateY(-10vh) translateX(50px);
+        opacity: 0;
+    }
 }
